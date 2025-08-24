@@ -1,4 +1,4 @@
-# server-essentials
+# Server Essentials
 
 A collection of reusable utilities, middleware, and services for Node.js server projects.  
 This package helps you quickly add common server functionality such as authentication, messaging, file handling, logging, and more.
@@ -9,17 +9,17 @@ This package helps you quickly add common server functionality such as authentic
 - **Configuration:** Centralized config loader.
 - **Middleware:** JWT authentication and file upload for Express.
 - **Utilities:**
-  - Auth: OTP generation/email, token management.
-  - Date: Date formatting and manipulation.
-  - Files: File handling helpers.
-  - Logging: Simple logger.
-  - Messaging: Firebase Cloud Messaging sender.
-  - Validation: Input validation helpers.
+  - **Auth:** OTP generation/email, token management.
+  - **Date:** Date formatting and manipulation.
+  - **Files:** File handling helpers.
+  - **Logging:** Simple logger.
+  - **Messaging:** Firebase Cloud Messaging sender.
+  - **Validation:** Input validation helpers.
 
 ## Installation
 
 ```bash
-npm install server-essentials
+npm install @eloritzkovitz/server-essentials
 ```
 
 ## Usage
