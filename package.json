@@ -1,6 +1,6 @@
 {
   "name": "@eloritzkovitz/server-essentials",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A collection of reusable libraries, utilities and helpers to accelerate Node.js server development.",
   "license": "MIT",
   "main": "dist/index.js",
@@ -13,44 +13,47 @@
   "files": [
     "dist"
   ],
-  "keywords": ["nodejs", "express", "utilities"],
+  "keywords": [
+    "nodejs",
+    "express",
+    "utilities"
+  ],
   "author": "Elor Itzkovitz",
   "repository": {
     "type": "git",
     "url": "https://github.com/eloritzkovitz/server-essentials.git"
   },
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
+    "@types/bcrypt": "6.0.0",
     "@types/express": "^5.0.1",
-    "@types/multer": "^1.4.12",
+    "@types/multer": "2.0.0",
     "amqplib": "0.10.8",
     "axios": "1.11.0",
-    "dotenv": "^16.5.0",
+    "dotenv": "17.2.1",
     "express": "^5.1.0",
     "google-auth-library": "10.2.1",
     "jsonwebtoken": "^9.0.2",
-    "multer": "^1.4.5-lts.2",
+    "multer": "2.0.2",
     "nodemailer": "7.0.5",
     "path-to-regexp": "^8.2.0",
     "uuid": "11.1.0",
     "winston": "3.17.0"
   },
   "devDependencies": {
-    "@eslint/js": "9.32.0",
+    "@eslint/js": "9.34.0",
     "@types/amqplib": "0.10.7",
     "@types/dotenv": "^6.1.1",
-    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "9.0.7",
-    "@types/node": "^22.14.1",
+    "@types/node": "24.3.0",
     "@types/nodemailer": "7.0.1",
     "@types/supertest": "^6.0.3",
     "@types/uuid": "10.0.0",
     "copyfiles": "^2.4.1",
-    "eslint": "9.32.0",
+    "eslint": "9.34.0",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "5.8.3",
-    "typescript-eslint": "8.38.0"
+    "typescript": "5.9.2",
+    "typescript-eslint": "8.40.0"
   }
 }
