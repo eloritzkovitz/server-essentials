@@ -1,7 +1,8 @@
 {
   "name": "@eloritzkovitz/server-essentials",
   "version": "1.0.0",
-  "description": "",
+  "description": "A collection of reusable libraries, utilities and helpers to accelerate Node.js server development.",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -12,6 +13,12 @@
   "files": [
     "dist"
   ],
+  "keywords": ["nodejs", "express", "utilities"],
+  "author": "Elor Itzkovitz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eloritzkovitz/server-essentials.git"
+  },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
@@ -45,9 +52,5 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "5.8.3",
     "typescript-eslint": "8.38.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/eloritzkovitz/voltrico.git"
   }
 }
