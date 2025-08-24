@@ -120,7 +120,3 @@ server-essentials/
 ## License
 
 MIT
-
-## Contributing
-
-Feel free to open issues or submit pull requests for improvements
