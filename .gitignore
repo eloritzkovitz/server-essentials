@@ -1,0 +1,39 @@
+# IDE specific
+.vscode/
+.idea/
+*.iml
+
+# Environment files
+*.env
+*.pem
+*.npmrc
+
+#node
+node_modules/
+dist/
+logs/
+uploads/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.tgz
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
