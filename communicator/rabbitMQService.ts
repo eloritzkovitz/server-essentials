@@ -11,12 +11,34 @@ class RabbitMQService {
 
   constructor() {}
 
+  /**
+   * Initializes the RabbitMQ connection and channel.
+   */
   async init() {
     if (this.initialized) return;
-    const connection = await amqp.connect(config.msgBrokerURL!);
-    this.channel = await connection.createChannel();
-    this.initialized = true;
+    try {
+      const connection = await amqp.connect(config.msgBrokerURL!);
+      this.channel = await connection.createChannel();
+      this.initialized = true;
+    } catch (err) {
+      console.error("Error initializing RabbitMQ connection:", err);
+      this.initialized = false;
+      throw err;
+    }
   }
+
+  /**
+   * Closes the RabbitMQ connection and channel.
+   */
+  async close() {
+    if (!this.initialized) return;
+    try {
+      this.channel.close();
+      this.initialized = false;
+    } catch (err) {
+      console.error("Error closing RabbitMQ connection:", err);
+    }
+  }  
 
   /**
    * Generic RPC request method.
