@@ -9,9 +9,7 @@ class RabbitMQService {
   private correlationMap = new Map<string, RPCResponseCallback>();
   private initialized = false;
 
-  constructor() {
-    this.init();
-  }
+  constructor() {}
 
   async init() {
     if (this.initialized) return;

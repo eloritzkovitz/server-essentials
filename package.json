@@ -27,11 +27,11 @@
     "@types/bcrypt": "6.0.0",
     "@types/express": "^5.0.1",
     "@types/multer": "2.0.0",
-    "amqplib": "0.10.8",
+    "amqplib": "0.10.9",
     "axios": "1.11.0",
     "dotenv": "17.2.1",
     "express": "^5.1.0",
-    "google-auth-library": "10.2.1",
+    "google-auth-library": "10.3.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "2.0.2",
     "nodemailer": "7.0.5",
@@ -54,6 +54,6 @@
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "5.9.2",
-    "typescript-eslint": "8.40.0"
+    "typescript-eslint": "8.41.0"
   }
 }
