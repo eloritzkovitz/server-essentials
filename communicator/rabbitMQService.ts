@@ -17,7 +17,7 @@ class RabbitMQService {
   async init() {
     if (this.initialized) return;
     try {
-      const connection = await amqp.connect(config.msgBrokerURL!);
+      const connection = await amqp.connect(config.messaging.rabbitMQURL!);
       this.channel = await connection.createChannel();
       this.initialized = true;
     } catch (err) {

@@ -1,7 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import config from '../config/config';
 
-// Middleware to check if the user is authenticated
+/**
+ * Express middleware to check if the user is authenticated via JWT.
+ *
+ * - Expects the JWT in the 'Authorization' header as 'Bearer <token>'.
+ * - Attaches the user object ({ id, role }) to req.user if valid.
+ * - Responds with 401 if token is missing or invalid.
+ * - Responds with 500 if TOKEN_SECRET is not set.
+ *
+ * Usage:
+ *   app.use(authenticate);
+ */
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
     const authorization = req.header('authorization');
     const token = authorization && authorization.split(' ')[1];
@@ -10,12 +21,12 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
         res.status(401).send('Access Denied');
         return;
     }
-    if (!process.env.TOKEN_SECRET) {
+    if (!config.jwt.secret) {
         res.status(500).send('Server Error');
         return;
     }
 
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, payload) => {
+    jwt.verify(token, config.jwt.secret, (err, payload) => {
         if (err) {
             res.status(401).send('Access Denied');
             return;
@@ -25,7 +36,15 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     });
 };
 
-// Middleware to check if the user is an admin
+/**
+ * Express middleware to check if the authenticated user has the 'admin' role.
+ *
+ * - Requires req.user to be set by the authenticate middleware.
+ * - Responds with 403 if the user is not an admin.
+ *
+ * Usage:
+ *   app.use(requireAdmin);
+ */
 export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
     if ((req as any).user?.role === 'admin') {
         next();

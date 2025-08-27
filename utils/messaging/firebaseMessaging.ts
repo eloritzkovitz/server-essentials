@@ -2,10 +2,29 @@ import { JWT } from "google-auth-library";
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-import 'dotenv/config';
+import config from "../../config/config";
 
 const SCOPES = ["https://www.googleapis.com/auth/firebase.messaging"];
 
+/**
+ * Sends a Firebase Cloud Messaging (FCM) notification using the HTTP v1 API.
+ *
+ * Requires the GOOGLE_APPLICATION_CREDENTIALS environment variable to be set to the path of a Firebase service account JSON file.
+ *
+ * @param token - The recipient device's FCM token.
+ * @param notification - The notification object containing title and body.
+ * @param data - (Optional) Custom data payload as key-value pairs.
+ * @param android - (Optional) Android-specific options.
+ * @param webpush - (Optional) Webpush-specific options.
+ * @throws If GOOGLE_APPLICATION_CREDENTIALS is not set or credentials are invalid.
+ *
+ * @example
+ * await sendFcmHttpV1({
+ *   token: "recipient_token",
+ *   notification: { title: "Hello", body: "World" },
+ *   data: { key: "value" }
+ * });
+ */
 export async function sendFcmHttpV1({
   token,
   notification,
@@ -19,7 +38,7 @@ export async function sendFcmHttpV1({
   android?: any;
   webpush?: any;
 }) {
-  const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  const credentialsPath = config.firebase.credentialsPath;
   if (!credentialsPath) {
     throw new Error("GOOGLE_APPLICATION_CREDENTIALS environment variable is not set.");
   }

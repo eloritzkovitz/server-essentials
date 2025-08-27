@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import config from "../../config/config";
 
 /**
  * Generate a random OTP and its expiration time.
@@ -19,17 +20,17 @@ export function generateOtp() {
  */
 export async function sendOtpMail(to: string, otp: string, subject: string) {
   const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
+  host: config.smtp.host,
+  port: config.smtp.port,
   secure: true, 
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: config.smtp.user,
+    pass: config.smtp.pass,
   },
 });
 
   await transporter.sendMail({
-    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    from: config.smtp.from,
     to,
     subject,
     text: `Your OTP code is: ${otp}`,
