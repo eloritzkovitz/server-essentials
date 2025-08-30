@@ -1,6 +1,6 @@
 {
   "name": "@eloritzkovitz/server-essentials",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A collection of reusable libraries, utilities and helpers to accelerate Node.js server development.",
   "license": "MIT",
   "main": "dist/index.js",
