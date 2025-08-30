@@ -18,6 +18,9 @@ export * from "./utils/date/dateFormatting";
 // Utilities: Files
 export * from "./utils/files/fileService";
 
+// Utilities: Gateway
+export * from "./utils/gateway/registerProxyRoutes";
+
 // Utilities: Logging
 export * from "./utils/logging/logger";
 
