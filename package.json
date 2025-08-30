@@ -1,6 +1,6 @@
 {
   "name": "@eloritzkovitz/server-essentials",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A collection of reusable libraries, utilities and helpers to accelerate Node.js server development.",
   "license": "MIT",
   "main": "dist/index.js",
@@ -27,6 +27,7 @@
   "dependencies": {
     "@types/bcrypt": "6.0.0",
     "@types/express": "^5.0.1",
+    "@types/http-proxy": "1.17.16",
     "@types/multer": "2.0.0",
     "amqplib": "0.10.9",
     "axios": "1.11.0",
@@ -36,7 +37,7 @@
     "http-proxy": "1.18.1",
     "jsonwebtoken": "^9.0.2",
     "multer": "2.0.2",
-    "nodemailer": "7.0.5",
+    "nodemailer": "7.0.6",
     "path-to-regexp": "^8.2.0",
     "uuid": "11.1.0",
     "winston": "3.17.0"
@@ -45,8 +46,7 @@
     "@eslint/js": "9.34.0",
     "@types/amqplib": "0.10.7",
     "@types/dotenv": "^6.1.1",
-    "@types/http-proxy": "1.17.16",
-    "@types/jsonwebtoken": "9.0.7",
+    "@types/jsonwebtoken": "9.0.10",
     "@types/node": "24.3.0",
     "@types/nodemailer": "7.0.1",
     "@types/supertest": "^6.0.3",
