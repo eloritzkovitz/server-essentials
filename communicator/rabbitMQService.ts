@@ -12,23 +12,38 @@ class RabbitMQService {
   constructor() {}
 
   /**
-   * Initializes the RabbitMQ connection and channel.
+   * Initializes the RabbitMQ connection and channel with retry logic.
+   * Retries the connection up to `retries` times, waiting `delayMs` milliseconds between attempts.
+   * This helps services handle startup timing issues (e.g., when RabbitMQ is not ready in Docker).
+   *
+   * @param retries - Number of connection attempts before failing (default: 5).
+   * @param delayMs - Delay in milliseconds between retries (default: 2000).
+   * @throws Error if connection fails after all retries.
    */
-  async init() {
+  async init(retries = 5, delayMs = 2000) {
     if (this.initialized) return;
-    try {
-      const connection = await amqp.connect(config.messaging.rabbitMQURL!);
-      this.channel = await connection.createChannel();
-      this.initialized = true;
-    } catch (err) {
-      console.error("Error initializing RabbitMQ connection:", err);
-      this.initialized = false;
-      throw err;
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const connection = await amqp.connect(config.messaging.rabbitMQURL!);
+        this.channel = await connection.createChannel();
+        this.initialized = true;
+        return;
+      } catch (err) {
+        console.error(`RabbitMQ connection attempt ${attempt} failed:`, err);
+        if (attempt < retries) {
+          await new Promise((res) => setTimeout(res, delayMs));
+        } else {
+          throw new Error(
+            "Failed to connect to RabbitMQ after multiple attempts."
+          );
+        }
+      }
     }
   }
 
   /**
-   * Closes the RabbitMQ connection and channel.
+   * Closes the RabbitMQ connection and channel gracefully.
+   * Logs any errors encountered during closure.
    */
   async close() {
     if (!this.initialized) return;
@@ -38,7 +53,7 @@ class RabbitMQService {
     } catch (err) {
       console.error("Error closing RabbitMQ connection:", err);
     }
-  }  
+  }
 
   /**
    * Generic RPC request method.
@@ -95,4 +110,7 @@ class RabbitMQService {
   }
 }
 
+/**
+ * Singleton instance of RabbitMQService for use across the application.
+ */
 export const rabbitMQService = new RabbitMQService();
