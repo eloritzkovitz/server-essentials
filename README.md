@@ -48,74 +48,9 @@ TOKEN_SECRET=your_jwt_secret
 GOOGLE_APPLICATION_CREDENTIALS=path/to/serviceAccount.json
 ```
 
-## API Overview
+## API Documentation
 
-### Communicator
-
-- `rabbitMQService.requestRPC(requestQueue, responseQueue, payload, callback)`
-- `rabbitMQService.publishNotification(queue, payload)`
-
-### Middleware
-
-- `authenticate`: Express middleware for JWT authentication.
-- `requireAdmin`: Express middleware for admin role check.
-- `upload`: Express middleware for file uploads.
-
-### Utilities
-
-#### Auth
-- `generateOtp()`: Generate OTP and expiration.
-- `sendOtpMail(to, otp, subject)`: Send OTP via email.
-- `createToken(payload)`: Create JWT token.
-- `verifyToken(token)`: Verify JWT token.
-
-#### Date
-- `formatDate(date)`: Format date to string.
-- `addMinutes(date, minutes)`: Add minutes to date.
-- `diffInMinutes(date1, date2)`: Difference in minutes.
-
-#### Files
-- `fileService`: File handling helpers.
-
-#### Logging
-- `logger`: Simple logging utility.
-
-#### Messaging
-- `sendFcmHttpV1({ token, notification, ... })`: Send Firebase Cloud Message.
-
-#### Validation
-- `isValidEmail(email)`: Validate email address.
-- `isValidPhone(phone)`: Validate phone number.
-- `isStrongPassword(password)`: Check password strength.
-
-## Folder Structure
-
-```
-server-essentials/
-│
-├── communicator/
-│   └── rabbitMQService.ts
-├── config/
-│   └── config.ts
-├── middleware/
-│   ├── auth.ts
-│   └── upload.ts
-├── utils/
-│   ├── auth/
-│   │   ├── otpService.ts
-│   │   └── tokenService.ts
-│   ├── date/
-│   │   └── dateFormatting.ts
-│   ├── files/
-│   │   └── fileService.ts
-│   ├── logging/
-│   │   └── logger.ts
-│   ├── messaging/
-│   │   └── firebaseMessaging.ts
-│   └── validation/
-│       └── validation.ts
-└── index.ts
-```
+Full API documentation is available in the [`docs`](docs) folder and can be viewed online via [GitHub Pages](https://eloritzkovitz.github.io/server-essentials/).
 
 ## License
 
