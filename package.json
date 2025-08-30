@@ -9,7 +9,7 @@
     "build": "tsc",
     "dev": "nodemon",
     "lint": "eslint . --ext .ts",
-    "docs": "typedoc --out docs ."
+    "docs": "typedoc --out docs --entryPointStrategy expand index.ts config communicator middleware utils"
   },
   "files": [
     "dist"
