@@ -13,7 +13,10 @@
     "types": ["node"]
   },
   "include": [
-    "**/*.ts"
+    "config",
+    "communicator",
+    "middleware",
+    "utils"
   ],
   "exclude": [
     "node_modules",
