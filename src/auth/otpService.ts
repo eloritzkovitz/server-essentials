@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-import config from "../../config/config";
+import config from "../config/config";
 
 /**
  * Generate a random OTP and its expiration time.

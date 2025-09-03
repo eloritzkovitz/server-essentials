@@ -2,7 +2,7 @@ import { JWT } from "google-auth-library";
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-import config from "../../config/config";
+import config from "../config/config";
 
 const SCOPES = ["https://www.googleapis.com/auth/firebase.messaging"];
 
