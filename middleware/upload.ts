@@ -3,17 +3,14 @@ import path from 'path';
 import config from '../config/config';
 
 /**
- * Multer middleware for handling image uploads.
- *
- * - Stores uploaded files in the 'uploads' directory at the project root.
- * - Filenames are prefixed with a timestamp for uniqueness.
- * - Only allows JPEG and PNG image files.
- *
- * Usage:
- *   app.post('/upload', upload.single('image'), (req, res) => { ... });
+ * Directory for uploads, configurable via config.
  */
-const uploadDir = path.join(process.cwd(), config.uploadDir);
-const storage = multer.diskStorage({
+export const uploadDir = path.join(process.cwd(), config.uploadDir);
+
+/**
+ * Multer storage configuration.
+ */
+export const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
   },
@@ -23,16 +20,12 @@ const storage = multer.diskStorage({
 });
 
 /**
- * File filter to allow only JPEG and PNG images.
- * @param req - Express request object.
- * @param file - Uploaded file object.
- * @param cb - Callback to indicate acceptance or rejection.
+ * File filter for images (JPEG, PNG).
  */
-const fileFilter = (req: any, file: any, cb: any) => {
+export const imageFileFilter = (req: any, file: any, cb: any) => {
   const allowedTypes = /jpeg|jpg|png/;
   const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
-
   if (extname && mimetype) {
     return cb(null, true);
   } else {
@@ -41,11 +34,57 @@ const fileFilter = (req: any, file: any, cb: any) => {
 };
 
 /**
- * Multer upload instance configured for image files.
+ * File filter for common document and file types (PDF, DOC, DOCX, XLS, XLSX, TXT).
  */
-const upload = multer({
-  storage,
-  fileFilter,  
-});
+export const documentFileFilter = (req: any, file: any, cb: any) => {
+  const allowedMimeTypes = [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'text/plain'
+  ];
+  if (allowedMimeTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only document files (PDF, DOC, DOCX, XLS, XLSX, TXT) are allowed'));
+  }
+};
 
-export default upload;
+/**
+ * File filter for any file type (accepts all).
+ */
+export const anyFileFilter = (req: any, file: any, cb: any) => {
+  cb(null, true);
+};
+
+/**
+ * Create a Multer upload instance with optional custom file filter and storage.
+ * @param fileFilter - Optional custom file filter function (default: imageFileFilter).
+ * @param customStorage - Optional custom Multer storage (default: storage).
+ */
+export function createUpload(
+  fileFilter = anyFileFilter,
+  customStorage = storage
+) {
+  return multer({
+    storage: customStorage,
+    fileFilter,
+  });
+}
+
+/**
+ * Default Multer upload instance for any file type.
+ */
+export const upload = createUpload();
+
+/**
+ * Default Multer upload instance for images.
+ */
+export const uploadImage = createUpload(imageFileFilter);
+
+/**
+ * Multer upload instance for documents.
+ */
+export const uploadDocument = createUpload(documentFileFilter);

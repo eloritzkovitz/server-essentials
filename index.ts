@@ -6,7 +6,7 @@ export * from "./config/config";
 
 // Middleware
 export * from "./middleware/auth";
-export { default as upload } from "./middleware/upload";
+export * from "./middleware/upload";
 
 // Utilities: Auth
 export * from "./utils/auth/otpService";
