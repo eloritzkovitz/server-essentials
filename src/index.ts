@@ -3,6 +3,7 @@ export * from "./config/config";
 
 // Authentication & Authorization
 export * from "./auth/middleware";
+export * from "./auth/requestHelpers";
 export * from "./auth/otpService";
 export * from "./auth/tokenService";
 
