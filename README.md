@@ -5,16 +5,35 @@ This package helps you quickly add common server functionality such as authentic
 
 ## Features
 
-- **Communicator:** RabbitMQ service for messaging and RPC.
-- **Configuration:** Centralized config loader.
-- **Middleware:** JWT authentication and file upload for Express.
-- **Utilities:**
-  - **Auth:** OTP generation/email, token management.
-  - **Date:** Date formatting and manipulation.
-  - **Files:** File handling helpers.
-  - **Logging:** Simple logger.
-  - **Messaging:** Firebase Cloud Messaging sender.
-  - **Validation:** Input validation helpers.
+### [Auth](src/auth/)
+- JWT authentication middleware
+- Role-based authorization
+- OTP generation and email delivery
+- Token management and refresh token verification
+- Request helpers
+
+### [Configuration](src/config/)
+- Centralized config loader with environment variable support
+
+### [Files](src/files/)
+- File upload middleware for Express
+- File handling helpers
+
+### [Formatting](src/formatting/)
+- Date formatting and manipulation
+
+### [Gateway](src/gateway/)
+- Proxy middleware for API gateway scenarios
+
+### [Logging](src/logging/)
+- Winston-based logger
+
+### [Messaging](src/messaging/)
+- RabbitMQ service for notifications and RPC
+- Firebase Cloud Messaging sender
+
+### [Validation](src/validation/)
+- Input validation helpers (email, phone, password, etc.)
 
 ## Installation
 
@@ -47,6 +66,20 @@ TOKEN_SECRET=your_jwt_secret
 # Firebase Messaging
 GOOGLE_APPLICATION_CREDENTIALS=path/to/serviceAccount.json
 ```
+
+## Testing & Coverage
+
+Run all tests and view coverage reports using [Jest](https://jestjs.io/):
+
+```bash
+npm test
+npx jest --coverage
+```
+
+The coverage report will be generated in the `coverage/` folder (which is gitignored by default).
+
+You can add or run tests for any module in the `test/` directory.  
+Tests are organized to match the source code structure for easy maintenance.
 
 ## API Documentation
 
