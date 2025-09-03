@@ -1,4 +1,4 @@
-import { logger } from "../../src/logging/logger";
+import { logger, buildLogger } from "../../src/logging/logger";
 import winston from "winston";
 
 describe("logger", () => {
@@ -42,5 +42,23 @@ describe("logger", () => {
   it("should not exit on error", () => {
     expect(logger.exitOnError).toBe(false);
     logger.error("Test error message");
+  });
+});
+
+describe("buildLogger", () => {
+  it("includes file transports in development mode", () => {
+    const devLogger = buildLogger({ production: false });
+    const transportTypes = devLogger.transports.map((t) => t.constructor.name);
+    expect(transportTypes).toContain("Console");
+    expect(transportTypes).toContain("File");
+    const fileTransports = devLogger.transports.filter((t) => t.constructor.name === "File");
+    expect(fileTransports.length).toBe(4);
+  });  
+
+  it("does not include file transports in production mode", () => {
+    const prodLogger = buildLogger({ production: true });
+    const transportTypes = prodLogger.transports.map((t) => t.constructor.name);
+    expect(transportTypes).toContain("Console");
+    expect(transportTypes).not.toContain("File");
   });
 });
