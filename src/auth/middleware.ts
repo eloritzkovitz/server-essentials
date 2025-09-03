@@ -37,18 +37,19 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 };
 
 /**
- * Express middleware to check if the authenticated user has the 'admin' role.
+ * Express middleware to check if the authenticated user has a required role.
  *
- * - Requires req.user to be set by the authenticate middleware.
- * - Responds with 403 if the user is not an admin.
- *
+ * @param role - The required user role (e.g., 'admin', 'editor').
  * Usage:
- *   app.use(requireAdmin);
+ *   app.use(requireRole('admin'));
+ *   app.use(requireRole('editor'));
  */
-export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
-    if ((req as any).user?.role === 'admin') {
-        next();
+export function requireRole(role: string) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if ((req as any).user?.role === role) {
+      next();
     } else {
-        res.status(403).json({ message: 'Admin access required' });
+      res.status(403).json({ message: `${role} access required` });
     }
-};
+  };
+}
