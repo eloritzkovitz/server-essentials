@@ -9,7 +9,7 @@ export function isValidEmail(email: string): boolean {
  * Validates a phone number (basic international format).
  */
 export function isValidPhone(phone: string): boolean {
-  return /^\+?[1-9]\d{1,14}$/.test(phone);
+  return /^\+?[1-9]\d{9,14}$/.test(phone);
 }
 
 /**

@@ -8,16 +8,21 @@ import config from '../config/config';
 export const uploadDir = path.join(process.cwd(), config.uploadDir);
 
 /**
- * Multer storage configuration.
+ * Multer storage configuration object (for testing).
  */
-export const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+export const storageConfig = {
+  destination: (_req: Express.Request, _file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
     cb(null, uploadDir);
   },
-  filename: (req, file, cb) => {
+  filename: (_req: Express.Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
     cb(null, `${Date.now()}-${file.originalname}`);
   },
-});
+};
+
+/**
+ * Multer storage engine.
+ */
+export const storage = multer.diskStorage(storageConfig);
 
 /**
  * File filter for images (JPEG, PNG).

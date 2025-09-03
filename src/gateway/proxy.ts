@@ -28,7 +28,9 @@ export function registerProxyRoutes(
    */
   function handleProxyError(res: Response, serviceName: string) {
     return (err: { message: any }) => {
-      console.error(`Error forwarding to ${serviceName} service: ${err.message}`);
+      console.error(
+        `Error forwarding to ${serviceName} service: ${err.message}`
+      );
       res.status(500).send("Internal Server Error");
     };
   }
@@ -44,7 +46,9 @@ export function registerProxyRoutes(
    */
   routes.forEach(({ apiPath, target, rewritePrefix, serviceName }) => {
     app.use(apiPath, (req, res) => {
-      req.url = req.originalUrl.replace(new RegExp(`^${apiPath}`), rewritePrefix);
+      req.url = req.originalUrl
+        .replace(new RegExp(`^${apiPath}`), rewritePrefix)
+        .replace(/\/{2,}/g, "/");
       proxy.web(req, res, { target }, handleProxyError(res, serviceName));
     });
   });

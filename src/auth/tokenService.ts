@@ -16,10 +16,14 @@ export const generateToken = (
   userId: string,
   role?: string
 ): tTokens | null => {
+  if (!userId) return null;
+
   if (!config.jwt.secret) {
     return null;
-  }  
+  }
+
   const random = Math.random().toString();
+
   // Generate access token
   const accessToken = jwt.sign(
     {
@@ -30,6 +34,7 @@ export const generateToken = (
     config.jwt.secret as jwt.Secret,
     { expiresIn: config.jwt.expires } as jwt.SignOptions
   );
+
   // Generate refresh token
   const refreshToken = jwt.sign(
     {
@@ -91,6 +96,8 @@ export const verifyRefreshToken = async (
             (token: string) => token !== refreshToken
           );
           user.refreshToken = tokens;
+
+          await user.save();
 
           resolve(user);
         } catch (err) {
