@@ -1,6 +1,6 @@
 {
   "name": "@eloritzkovitz/server-essentials",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A collection of reusable libraries, utilities and helpers to accelerate Node.js server development.",
   "license": "MIT",
   "main": "dist/index.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon",
-    "docs": "typedoc --out docs --entryPoints src/index.ts src/auth src/config src/files src/formatting src/gateway src/logging src/messaging src/validation --entryPointStrategy expand",
+    "docs": "typedoc --out docs --entryPoints src/index.ts src/auth src/config src/files src/formatting src/gateway src/logging src/messaging src/server src/validation --entryPointStrategy expand",
     "lint": "eslint . --ext .ts",
     "test": "jest --coverage --runInBand"
   },
