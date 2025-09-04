@@ -2,20 +2,22 @@ import { Router } from "express";
 import fs from "fs";
 import path from "path";
 
-// Load package.json to get app information
-const pkg = JSON.parse(
-  fs.readFileSync(
-    path.resolve(__dirname, "../../../package.json"),
-    "utf-8"
-  )
-);
-
 /**
  * Creates a server info/health router.
  * @param getDbState - Optional function to return DB state ("up", "down", etc.)
  * @returns Express Router
  */
 function createServerRouter(getDbState?: () => string) {
+  // Load package.json to get app information
+  let pkg = { name: "", version: "", description: "" };
+  try {
+    pkg = JSON.parse(
+      fs.readFileSync(path.resolve(process.cwd(), "package.json"), "utf-8")
+    );
+  } catch {
+    pkg = { name: "unknown", version: "unknown", description: "" };
+  }
+
   const router = Router();
 
   /**
@@ -53,7 +55,7 @@ function createServerRouter(getDbState?: () => string) {
       name: pkg.name,
       version: pkg.version,
       description: pkg.description,
-      environment: process.env.NODE_ENV || "development"
+      environment: process.env.NODE_ENV || "development",
     });
   });
 
