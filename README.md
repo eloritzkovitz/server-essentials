@@ -26,11 +26,18 @@ This package helps you quickly add common server functionality such as authentic
 - Proxy middleware for API gateway scenarios
 
 ### [Logging](src/logging/)
-- Winston-based logger
+- Winston-based logger with environment-aware configuration
+- Colorized console and file logs in development
+- JSON console logs in production/Docker
+- HTTP request logging middleware
+- Log helpers for error handling, request tracing, and masking sensitive data
 
 ### [Messaging](src/messaging/)
 - RabbitMQ service for notifications and RPC
 - Firebase Cloud Messaging sender
+
+### [Server](src/server/)
+- Health check, ping, and API info endpoints
 
 ### [Validation](src/validation/)
 - Input validation helpers (email, phone, password, etc.)
