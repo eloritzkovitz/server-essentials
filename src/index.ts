@@ -26,6 +26,9 @@ export * from "./logging/logHelpers";
 export * from "./messaging/rabbitMQService";
 export * from "./messaging/firebaseMessaging";
 
+// Server
+export * from "./server/serverRouter";
+
 // Utilities
 export * from "./utils/handleError";
 

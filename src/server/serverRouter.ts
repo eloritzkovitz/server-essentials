@@ -7,7 +7,7 @@ import path from "path";
  * @param getDbState - Optional function to return DB state ("up", "down", etc.)
  * @returns Express Router
  */
-function createServerRouter(getDbState?: () => string) {
+export function createServerRouter(getDbState?: () => string) {
   // Load package.json to get app information
   let pkg = { name: "", version: "", description: "" };
   try {
@@ -119,5 +119,3 @@ function createServerRouter(getDbState?: () => string) {
 
   return router;
 }
-
-export default createServerRouter;
