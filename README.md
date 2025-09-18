@@ -21,6 +21,9 @@ This package helps you quickly add common server functionality such as authentic
 
 ### [Formatting](src/formatting/)
 - Date formatting and manipulation
+- Number formatting and manipulation
+- String formatting and manipulation
+- Helpers for masking emails/phones and formatting IDs/codes
 
 ### [Gateway](src/gateway/)
 - Proxy middleware for API gateway scenarios
