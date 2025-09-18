@@ -1,0 +1,20 @@
+export const DEFAULT_MINOR_WORDS = [
+  "a",
+  "an",
+  "and",
+  "as",
+  "at",
+  "but",
+  "by",
+  "for",
+  "in",
+  "nor",
+  "of",
+  "on",
+  "or",
+  "so",
+  "the",
+  "to",
+  "up",
+  "yet"
+];
