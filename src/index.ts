@@ -13,6 +13,7 @@ export * from "./files/upload";
 
 // Formatting
 export * from "./formatting/date";
+export * from "./formatting/masking";
 export * from "./formatting/number";
 export * from "./formatting/string";
 
