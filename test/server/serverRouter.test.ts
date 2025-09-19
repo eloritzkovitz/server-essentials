@@ -1,6 +1,6 @@
 import request from "supertest";
 import express from "express";
-import createServerRouter from "../../src/server/serverRouter";
+import { createServerRouter } from "../../src/server/serverRouter";
 import fs from "fs";
 
 describe("serverRouter", () => {
