@@ -1,12 +1,17 @@
-import { logError, logWithRequestId, maskSensitive } from "../../src/logging/logHelpers";
+import { describe, it, expect, beforeEach, vi, Mock } from "vitest";
+import {
+  logError,
+  logWithRequestId,
+  maskSensitive,
+} from "../../src/logging/logHelpers";
 import { logger } from "../../src/logging/logger";
 
-jest.mock("../../src/logging/logger");
+vi.mock("../../src/logging/logger");
 
 describe("logHelpers", () => {
   beforeEach(() => {
-    (logger.error as jest.Mock).mockClear();
-    (logger.log as jest.Mock).mockClear();
+    (logger.error as Mock).mockClear();
+    (logger.log as Mock).mockClear();
   });
 
   it("logError logs error with stack and context", () => {
@@ -20,8 +25,8 @@ describe("logHelpers", () => {
       expect.objectContaining({
         foo: "bar",
         stack: "stacktrace",
-        name: "CustomError"
-      })
+        name: "CustomError",
+      }),
     );
   });
 
@@ -32,8 +37,8 @@ describe("logHelpers", () => {
       "message",
       expect.objectContaining({
         requestId: "req-123",
-        user: "u1"
-      })
+        user: "u1",
+      }),
     );
   });
 

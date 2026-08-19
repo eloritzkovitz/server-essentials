@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { registerProxyRoutes } from "../../src/gateway/proxy";
 
 describe("registerProxyRoutes", () => {
@@ -5,9 +6,9 @@ describe("registerProxyRoutes", () => {
   let proxy: any;
 
   beforeEach(() => {
-    app = { use: jest.fn() };
+    app = { use: vi.fn() };
     proxy = {
-      web: jest.fn(),
+      web: vi.fn(),
     };
   });
 
@@ -31,46 +32,35 @@ describe("registerProxyRoutes", () => {
 
     expect(app.use).toHaveBeenCalledTimes(2);
 
-    // Test the handler for the first route
     const [apiPath, handler] = app.use.mock.calls[0];
     expect(apiPath).toBe("/api/service1");
 
-    // Mock req/res for handler
     const req = {
       originalUrl: "/api/service1/foo/bar",
       url: "",
     };
     const res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
+      status: vi.fn().mockReturnThis(),
+      send: vi.fn(),
     };
 
-    // Simulate proxy.web call and error handler
     proxy.web.mockImplementation(
-      (
-        reqArg: any,
-        resArg: any,
-        opts: any,
-        cb: (err?: any) => void
-      ) => {
+      (reqArg: any, resArg: any, opts: any, cb: (err?: any) => void) => {
         cb({ message: "proxy error" });
-      }
+      },
     );
 
     handler(req, res);
 
-    // url should be rewritten
     expect(req.url).toBe("/foo/bar");
 
-    // proxy.web should be called with correct args
     expect(proxy.web).toHaveBeenCalledWith(
       req,
       res,
       { target: "http://service1.local" },
-      expect.any(Function)
+      expect.any(Function),
     );
 
-    // Error handler should send 500
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.send).toHaveBeenCalledWith("Internal Server Error");
   });

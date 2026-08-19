@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { describe, it, expect, vi, Mock } from "vitest";
 import {
   uploadDir,
   storageConfig,
@@ -15,7 +16,7 @@ describe("upload.ts", () => {
   it("storage sets destination", () => {
     const req = {} as Request;
     const file = { originalname: "file.txt" } as Partial<Express.Multer.File>;
-    const cb = jest.fn() as (error: Error | null, destination?: string) => void;
+    const cb = vi.fn() as (error: Error | null, destination?: string) => void;
 
     storageConfig.destination(req, file as Express.Multer.File, cb);
     expect(cb).toHaveBeenCalledWith(null, uploadDir);
@@ -24,8 +25,7 @@ describe("upload.ts", () => {
   it("storage sets filename", () => {
     const req = {} as Request;
     const file = { originalname: "file.txt" } as Partial<Express.Multer.File>;
-    const cb = jest.fn() as jest.Mock;
-
+    const cb = vi.fn() as Mock;
     storageConfig.filename(req, file as Express.Multer.File, cb);
     expect(cb.mock.calls[0][1]).toMatch(/^\d+-file\.txt$/);
   });
@@ -33,21 +33,21 @@ describe("upload.ts", () => {
   describe("imageFileFilter", () => {
     it("accepts jpeg image", () => {
       const file = { originalname: "photo.jpeg", mimetype: "image/jpeg" };
-      const cb = jest.fn();
+      const cb = vi.fn();
       imageFileFilter({}, file, cb);
       expect(cb).toHaveBeenCalledWith(null, true);
     });
 
     it("accepts png image", () => {
       const file = { originalname: "photo.png", mimetype: "image/png" };
-      const cb = jest.fn();
+      const cb = vi.fn();
       imageFileFilter({}, file, cb);
       expect(cb).toHaveBeenCalledWith(null, true);
     });
 
     it("rejects non-image file", () => {
       const file = { originalname: "doc.pdf", mimetype: "application/pdf" };
-      const cb = jest.fn();
+      const cb = vi.fn();
       imageFileFilter({}, file, cb);
       expect(cb.mock.calls[0][0]).toBeInstanceOf(Error);
     });
@@ -56,7 +56,7 @@ describe("upload.ts", () => {
   describe("documentFileFilter", () => {
     it("accepts pdf", () => {
       const file = { originalname: "doc.pdf", mimetype: "application/pdf" };
-      const cb = jest.fn();
+      const cb = vi.fn();
       documentFileFilter({}, file, cb);
       expect(cb).toHaveBeenCalledWith(null, true);
     });
@@ -67,14 +67,14 @@ describe("upload.ts", () => {
         mimetype:
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       };
-      const cb = jest.fn();
+      const cb = vi.fn();
       documentFileFilter({}, file, cb);
       expect(cb).toHaveBeenCalledWith(null, true);
     });
 
     it("rejects image file", () => {
       const file = { originalname: "photo.jpg", mimetype: "image/jpeg" };
-      const cb = jest.fn();
+      const cb = vi.fn();
       documentFileFilter({}, file, cb);
       expect(cb.mock.calls[0][0]).toBeInstanceOf(Error);
     });
@@ -86,7 +86,7 @@ describe("upload.ts", () => {
         originalname: "anything.any",
         mimetype: "application/octet-stream",
       };
-      const cb = jest.fn();
+      const cb = vi.fn();
       anyFileFilter({}, file, cb);
       expect(cb).toHaveBeenCalledWith(null, true);
     });

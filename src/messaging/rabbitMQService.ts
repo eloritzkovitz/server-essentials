@@ -1,8 +1,8 @@
 import amqp, { Channel } from "amqplib";
 import { v4 as uuidv4 } from "uuid";
-import config from "../config/config";
+import config from "../config/config.js";
 
-type RPCResponseCallback = (response: any) => void;
+type RPCResponseCallback = (response: unknown) => void;
 
 class RabbitMQService {
   private channel!: Channel;
@@ -34,7 +34,7 @@ class RabbitMQService {
           await new Promise((res) => setTimeout(res, delayMs));
         } else {
           throw new Error(
-            "Failed to connect to RabbitMQ after multiple attempts."
+            "Failed to connect to RabbitMQ after multiple attempts.",
           );
         }
       }
@@ -65,8 +65,8 @@ class RabbitMQService {
   async requestRPC(
     requestQueue: string,
     responseQueue: string,
-    payload: any,
-    callback: RPCResponseCallback
+    payload: unknown,
+    callback: RPCResponseCallback,
   ) {
     await this.init();
     await this.channel.assertQueue(requestQueue, { durable: true });
@@ -86,7 +86,7 @@ class RabbitMQService {
           }
         }
       },
-      { noAck: true }
+      { noAck: true },
     );
 
     const correlationId = uuidv4();
@@ -94,7 +94,7 @@ class RabbitMQService {
     this.channel.sendToQueue(
       requestQueue,
       Buffer.from(JSON.stringify(payload)),
-      { correlationId, replyTo: responseQueue }
+      { correlationId, replyTo: responseQueue },
     );
   }
 
@@ -103,7 +103,7 @@ class RabbitMQService {
    * @param queue - The queue to publish to.
    * @param payload - The notification payload.
    */
-  async publishNotification(queue: string, payload: any) {
+  async publishNotification(queue: string, payload: unknown) {
     await this.init();
     await this.channel.assertQueue(queue, { durable: true });
     this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)));

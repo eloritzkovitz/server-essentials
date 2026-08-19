@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { logger } from "../logging/logger";
+import { logger } from "../logging/logger.js";
 
 /**
  * Handles errors in controller functions by logging and sending a generic response.
@@ -23,17 +23,21 @@ export function handleError(
   message: string,
   error?: unknown,
   status = 500,
-  code?: string
+  code?: string,
 ) {
   logger.error("%s: %o", message, error);
 
-  const response: Record<string, any> = { message };
+  const response: Record<string, unknown> = { message };
   if (code) response.code = code;
 
   // Include error details in development only
   if (process.env.NODE_ENV !== "production" && error) {
     response.error =
-      error instanceof Error ? error.message : typeof error === "string" ? error : JSON.stringify(error);
+      error instanceof Error
+        ? error.message
+        : typeof error === "string"
+          ? error
+          : JSON.stringify(error);
   }
 
   res.status(status).json(response);

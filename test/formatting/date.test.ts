@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import { formatDate, addMinutes, diffInMinutes } from "../../src/formatting/date";
 
 describe("date formatting utilities", () => {

@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import path from "path";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import {
   fileExists,
   getFileExtension,
@@ -8,15 +9,25 @@ import {
   deleteFile,
 } from "../../src/files/fileService";
 
-jest.mock("fs", () => ({
-  promises: {
-    access: jest.fn(),
-    readFile: jest.fn(),
-    writeFile: jest.fn(),
-    unlink: jest.fn(),
+const { mockPromises, mockConstants } = vi.hoisted(() => ({
+  mockPromises: {
+    access: vi.fn(),
+    readFile: vi.fn(),
+    writeFile: vi.fn(),
+    unlink: vi.fn(),
   },
-  constants: { F_OK: 0 },
+  mockConstants: { F_OK: 0 },
 }));
+
+vi.mock("fs", () => ({
+  default: {
+    promises: mockPromises,
+    constants: mockConstants,
+  },
+  promises: mockPromises,
+  constants: mockConstants,
+}));
+
 const mockedFs = fs as any;
 
 describe("fileService", () => {
@@ -24,13 +35,16 @@ describe("fileService", () => {
   const testData = "Hello, world!";
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("fileExists returns true if file exists", async () => {
     mockedFs.promises.access.mockResolvedValue(undefined);
     await expect(fileExists(testPath)).resolves.toBe(true);
-    expect(mockedFs.promises.access).toHaveBeenCalledWith(testPath, fs.constants.F_OK);
+    expect(mockedFs.promises.access).toHaveBeenCalledWith(
+      testPath,
+      fs.constants.F_OK,
+    );
   });
 
   it("fileExists returns false if file does not exist", async () => {
@@ -52,12 +66,15 @@ describe("fileService", () => {
   it("writeFile writes data to file", async () => {
     mockedFs.promises.writeFile.mockResolvedValue(undefined);
     await expect(writeFile(testPath, testData)).resolves.toBeUndefined();
-    expect(mockedFs.promises.writeFile).toHaveBeenCalledWith(testPath, testData);
+    expect(mockedFs.promises.writeFile).toHaveBeenCalledWith(
+      testPath,
+      testData,
+    );
   });
 
   it("deleteFile deletes file successfully", async () => {
     mockedFs.promises.unlink.mockResolvedValue(undefined);
-    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await expect(deleteFile(testPath)).resolves.toBeUndefined();
     expect(mockedFs.promises.unlink).toHaveBeenCalledWith(testPath);
     expect(consoleSpy).toHaveBeenCalledWith(`File deleted: ${testPath}`);
@@ -67,20 +84,24 @@ describe("fileService", () => {
   it("deleteFile logs not found if file does not exist", async () => {
     const error = { code: "ENOENT" };
     mockedFs.promises.unlink.mockRejectedValue(error);
-    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await expect(deleteFile(testPath)).resolves.toBeUndefined();
-    expect(consoleSpy).toHaveBeenCalledWith(`File not found (not deleted): ${testPath}`);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      `File not found (not deleted): ${testPath}`,
+    );
     consoleSpy.mockRestore();
   });
 
   it("deleteFile logs warning for other errors", async () => {
     const error = { code: "EACCES", message: "Permission denied" };
     mockedFs.promises.unlink.mockRejectedValue(error);
-    const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const consoleWarnSpy = vi
+      .spyOn(console, "warn")
+      .mockImplementation(() => {});
     await expect(deleteFile(testPath)).resolves.toBeUndefined();
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       `Error deleting file ${testPath}:`,
-      error
+      error,
     );
     consoleWarnSpy.mockRestore();
   });

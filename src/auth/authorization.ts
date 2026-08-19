@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import config from "../config/config";
+import config from "../config/config.js";
 
 /**
  * Express middleware to check if the user is authenticated via JWT.

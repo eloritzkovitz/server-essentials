@@ -1,7 +1,11 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { generateToken, verifyRefreshToken } from "../../src/auth/tokenService";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  generateToken,
+  verifyRefreshToken,
+} from "../../src/auth/tokenService.js";
 import jwt from "jsonwebtoken";
 
 describe("generateToken", () => {
@@ -25,19 +29,23 @@ describe("generateToken", () => {
     expect(tokens).toHaveProperty("refreshToken");
   });
 
-  it("returns null if secret is missing", () => {
+  it("returns null if secret is missing", async () => {
     const originalSecret = process.env.TOKEN_SECRET;
     process.env.TOKEN_SECRET = "";
-    jest.resetModules();
-    const {
-      generateToken: freshGenerateToken,
-    } = require("../../src/auth/tokenService");
+
+    vi.resetModules();
+
+    const { generateToken: freshGenerateToken } =
+      await import("../../src/auth/tokenService.js");
+
     expect(freshGenerateToken("user123", "admin")).toBeNull();
+
     process.env.TOKEN_SECRET = originalSecret;
+    vi.resetModules();
   });
 
   it("returns null if userId is missing", () => {
-    // @ts-expect-error
+    // @ts-expect-error testing missing runtime argument
     const tokens = generateToken();
     expect(tokens).toBeNull();
   });
@@ -46,57 +54,58 @@ describe("generateToken", () => {
 describe("verifyRefreshToken", () => {
   it("rejects if refreshToken is undefined", async () => {
     await expect(verifyRefreshToken(undefined, {})).rejects.toBe(
-      "Refresh token is required"
+      "Refresh token is required",
     );
   });
 
   it("rejects if secret is missing", async () => {
     const originalSecret = process.env.TOKEN_SECRET;
     process.env.TOKEN_SECRET = "";
-    jest.resetModules();
-    const {
-      verifyRefreshToken: freshVerifyRefreshToken,
-    } = require("../../src/auth/tokenService");
+
+    vi.resetModules();
+    const { verifyRefreshToken: freshVerifyRefreshToken } =
+      await import("../../src/auth/tokenService.js");
+
     await expect(freshVerifyRefreshToken("sometoken", {})).rejects.toBe(
-      "Token secret is missing"
+      "Token secret is missing",
     );
+
     process.env.TOKEN_SECRET = originalSecret;
+    vi.resetModules();
   });
 
   it("rejects if jwt.verify fails", async () => {
-    jest
-      .spyOn(require("jsonwebtoken"), "verify")
-      .mockImplementation((token, secret, cb) =>
-        (cb as Function)("fail", null)
-      );
+    vi.spyOn(jwt, "verify").mockImplementation(
+      (_token: any, _secret: any, cb: any) => cb("fail", null),
+    );
     await expect(verifyRefreshToken("badtoken", {})).rejects.toBe("fail");
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("rejects if user not found", async () => {
-    const userModel = { findById: jest.fn().mockResolvedValue(null) };
-    jest
-      .spyOn(require("jsonwebtoken"), "verify")
-      .mockImplementation((token, secret, cb) =>
-        (cb as Function)(null, { _id: "user123" })
-      );
+    const userModel = {
+      findById: vi.fn<() => Promise<any>>().mockResolvedValue(null),
+    };
+    vi.spyOn(jwt, "verify").mockImplementation(
+      (_token: any, _secret: any, cb: any) => cb(null, { _id: "user123" }),
+    );
     await expect(verifyRefreshToken("token", userModel)).rejects.toBe("fail");
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("rejects if user.refreshToken is missing or does not include token", async () => {
     const user = {
       refreshToken: [],
-      save: jest.fn().mockResolvedValue(undefined),
+      save: vi.fn<() => Promise<any>>().mockResolvedValue(undefined),
     };
-    const userModel = { findById: jest.fn().mockResolvedValue(user) };
-    jest
-      .spyOn(require("jsonwebtoken"), "verify")
-      .mockImplementation((token, secret, cb) =>
-        (cb as Function)(null, { _id: "user123" })
-      );
+    const userModel = {
+      findById: vi.fn<() => Promise<any>>().mockResolvedValue(user),
+    };
+    vi.spyOn(jwt, "verify").mockImplementation(
+      (_token: any, _secret: any, cb: any) => cb(null, { _id: "user123" }),
+    );
     await expect(verifyRefreshToken("token", userModel)).rejects.toBe("fail");
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("resolves with user if refreshToken is valid", async () => {
@@ -107,30 +116,30 @@ describe("verifyRefreshToken", () => {
       },
     };
 
-    const userModel = { findById: jest.fn().mockResolvedValue(user) };
-    jest
-      .spyOn(jwt, "verify")
-      .mockImplementation((_token, _secret, cb) =>
-        (cb as Function)(null, { _id: "user123" })
-      );
+    const userModel = {
+      findById: vi.fn<() => Promise<any>>().mockResolvedValue(user),
+    };
+    vi.spyOn(jwt, "verify").mockImplementation(
+      (_token: any, _secret: any, cb: any) => cb(null, { _id: "user123" }),
+    );
 
     await expect(verifyRefreshToken("token", userModel)).resolves.toBe(user);
 
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("rejects if user.save throws", async () => {
     const user = {
       refreshToken: [],
-      save: jest.fn().mockRejectedValue(new Error("fail")),
+      save: vi.fn<() => Promise<any>>().mockRejectedValue(new Error("fail")),
     };
-    const userModel = { findById: jest.fn().mockResolvedValue(user) };
-    jest
-      .spyOn(require("jsonwebtoken"), "verify")
-      .mockImplementation((token, secret, cb) =>
-        (cb as Function)(null, { _id: "user123" })
-      );
+    const userModel = {
+      findById: vi.fn<() => Promise<any>>().mockResolvedValue(user),
+    };
+    vi.spyOn(jwt, "verify").mockImplementation(
+      (_token: any, _secret: any, cb: any) => cb(null, { _id: "user123" }),
+    );
     await expect(verifyRefreshToken("token", userModel)).rejects.toBe("fail");
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 });

@@ -1,4 +1,4 @@
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 
 /**
  * Logs an error with stack trace and optional context.

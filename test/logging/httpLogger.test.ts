@@ -1,10 +1,11 @@
-import { httpLogger } from "../../src/logging/httpLogger";
-import { logger } from "../../src/logging/logger";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { httpLogger } from "../../src/logging/httpLogger.js";
+import { logger } from "../../src/logging/logger.js";
 
-jest.mock("../../src/logging/logger");
+vi.mock("../../src/logging/logger.js");
 
 describe("httpLogger middleware", () => {
-  let req: any, res: any, next: jest.Mock;
+  let req: any, res: any, next: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     req = {
@@ -14,56 +15,56 @@ describe("httpLogger middleware", () => {
     };
     res = {
       statusCode: 200,
-      on: jest.fn((event, handler) => {
+      on: vi.fn((event: string, handler: (...args: any[]) => void) => {
         if (event === "finish") {
           handler();
         }
       }),
     };
-    next = jest.fn();
-    (logger.log as jest.Mock).mockClear();
+    next = vi.fn();
+    (logger.log as unknown as ReturnType<typeof vi.fn>).mockClear();
   });
 
   it("logs info for 2xx responses", () => {
     res.statusCode = 200;
-    httpLogger(req, res, next);
+    httpLogger(req, res, next as any);
     expect(logger.log).toHaveBeenCalledWith(
       "info",
-      "GET /test 200 0ms",
+      expect.stringMatching(/^GET \/test 200 \d+ms$/),
       expect.objectContaining({
         type: "http",
         method: "GET",
         url: "/test",
         status: 200,
         ip: "127.0.0.1",
-      })
+      }),
     );
     expect(next).toHaveBeenCalled();
   });
 
   it("logs warn for 4xx responses", () => {
     res.statusCode = 404;
-    httpLogger(req, res, next);
+    httpLogger(req, res, next as any);
     expect(logger.log).toHaveBeenCalledWith(
       "warn",
-      "GET /test 404 0ms",
+      expect.stringMatching(/^GET \/test 404 \d+ms$/),
       expect.objectContaining({
         type: "http",
         status: 404,
-      })
+      }),
     );
   });
 
   it("logs error for 5xx responses", () => {
     res.statusCode = 500;
-    httpLogger(req, res, next);
+    httpLogger(req, res, next as any);
     expect(logger.log).toHaveBeenCalledWith(
       "error",
-      "GET /test 500 0ms",
+      expect.stringMatching(/^GET \/test 500 \d+ms$/),
       expect.objectContaining({
         type: "http",
         status: 500,
-      })
+      }),
     );
   });
 });

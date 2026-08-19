@@ -1,8 +1,8 @@
+import { describe, it, expect, afterEach } from "vitest";
 import config from "../../src/config/config";
 
 describe("config", () => {
   afterEach(() => {
-    // Reset all env vars to avoid cross-test pollution
     delete process.env.TOKEN_SECRET;
     delete process.env.TOKEN_EXPIRES;
     delete process.env.REFRESH_TOKEN_EXPIRES;

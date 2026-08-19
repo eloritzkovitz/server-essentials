@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import { getUserId, getUserRole, getUserEmail, userHasRole, getUserRefreshToken } from "../../src/auth/requestHelpers";
 
 describe("requestHelpers", () => {

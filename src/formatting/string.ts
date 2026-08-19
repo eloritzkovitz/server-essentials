@@ -1,4 +1,4 @@
-import { DEFAULT_MINOR_WORDS } from "./constants";
+import { DEFAULT_MINOR_WORDS } from "./constants.js";
 
 /**
  * Capitalizes the first letter of a string.

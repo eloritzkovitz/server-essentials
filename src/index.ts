@@ -1,39 +1,39 @@
 // Configuration
-export * from "./config/config";
+export * from "./config/config.js";
 
 // Authentication & Authorization
-export * from "./auth/authorization";
-export * from "./auth/requestHelpers";
-export * from "./auth/otpService";
-export * from "./auth/tokenService";
+export * from "./auth/authorization.js";
+export * from "./auth/requestHelpers.js";
+export * from "./auth/otpService.js";
+export * from "./auth/tokenService.js";
 
 // Files
-export * from "./files/fileService";
-export * from "./files/upload";
+export * from "./files/fileService.js";
+export * from "./files/upload.js";
 
 // Formatting
-export * from "./formatting/date";
-export * from "./formatting/masking";
-export * from "./formatting/number";
-export * from "./formatting/string";
+export * from "./formatting/date.js";
+export * from "./formatting/masking.js";
+export * from "./formatting/number.js";
+export * from "./formatting/string.js";
 
 // Gateway
-export * from "./gateway/proxy";
+export * from "./gateway/proxy.js";
 
 // Logging
-export * from "./logging/httpLogger";
-export * from "./logging/logger";
-export * from "./logging/logHelpers";
+export * from "./logging/httpLogger.js";
+export * from "./logging/logger.js";
+export * from "./logging/logHelpers.js";
 
 // Messaging
-export * from "./messaging/rabbitMQService";
-export * from "./messaging/firebaseMessaging";
+export * from "./messaging/rabbitMQService.js";
+export * from "./messaging/firebaseMessaging.js";
 
 // Server
-export * from "./server/serverRouter";
+export * from "./server/serverRouter.js";
 
 // Utilities
-export * from "./utils/handleError";
+export * from "./utils/handleError.js";
 
 // Validation
-export * from "./validation/validation";
+export * from "./validation/validation.js";

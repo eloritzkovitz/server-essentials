@@ -1,5 +1,5 @@
+import { describe, it, expect } from "vitest";
 import { capitalize, titleCase, slugify, truncate } from "../../src/formatting/string";
-import { DEFAULT_MINOR_WORDS } from "../../src/formatting/constants";
 
 describe("string formatters", () => {
   it("capitalizes first letter", () => {
@@ -11,7 +11,6 @@ describe("string formatters", () => {
     expect(titleCase("the lord of the rings and the hobbit")).toBe("The Lord of the Rings and the Hobbit");
     expect(titleCase("a tale of two cities")).toBe("A Tale of Two Cities");
     expect(titleCase("")).toBe("");
-    // Custom minor words
     expect(titleCase("the quick brown fox", ["quick", "brown"])).toBe("The quick brown Fox");
   });
 

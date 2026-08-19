@@ -1,6 +1,6 @@
 import multer from 'multer';
 import path from 'path';
-import config from '../config/config';
+import config from '../config/config.js';
 
 /**
  * Directory for uploads, configurable via config.

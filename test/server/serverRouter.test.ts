@@ -1,7 +1,16 @@
-import request from "supertest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import express from "express";
-import { createServerRouter } from "../../src/server/serverRouter";
 import fs from "fs";
+import request from "supertest";
+import { createServerRouter } from "../../src/server/serverRouter";
 
 describe("serverRouter", () => {
   let app: express.Express;
@@ -26,7 +35,7 @@ describe("serverRouter", () => {
     expect(res.status).toBe(200);
     expect(res.body).toMatchObject({
       status: "ok",
-      db: "up"
+      db: "up",
     });
     expect(typeof res.body.uptime).toBe("number");
     expect(typeof res.body.timestamp).toBe("string");
@@ -44,14 +53,17 @@ describe("serverRouter (package.json fallback)", () => {
   const originalReadFileSync = fs.readFileSync;
 
   beforeAll(() => {
-    // Mock fs.readFileSync to throw, simulating missing package.json
-    (fs.readFileSync as any) = jest.fn(() => { throw new Error("File not found"); });
+    (fs.readFileSync as any) = vi.fn(() => {
+      throw new Error("File not found");
+    });
     app = express();
-    app.use("/", createServerRouter(() => "up"));
+    app.use(
+      "/",
+      createServerRouter(() => "up"),
+    );
   });
 
   afterAll(() => {
-    // Restore original fs.readFileSync
     (fs.readFileSync as any) = originalReadFileSync;
   });
 
@@ -62,7 +74,7 @@ describe("serverRouter (package.json fallback)", () => {
       name: "unknown",
       version: "unknown",
       description: "",
-      environment: expect.any(String)
+      environment: expect.any(String),
     });
   });
 });

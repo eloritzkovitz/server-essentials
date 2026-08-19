@@ -1,4 +1,5 @@
-import { generateOtp } from "../../src/auth/otpService";
+import { describe, it, expect } from "vitest";
+import { generateOtp } from "../../src/auth/otpService.js";
 
 describe("generateOtp", () => {
   it("generates a 6-digit OTP and expiration", () => {
